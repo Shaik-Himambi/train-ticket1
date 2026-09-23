@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "train-ticket-container",
-      "image": "072270723682.dkr.ecr.us-east-1.amazonaws.com/ecr_repo:latest",
+      "image": "<IMAGE>",
       "cpu": 0,
       "portMappings": [],
       "essential": true,
