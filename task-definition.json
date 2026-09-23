@@ -1,0 +1,50 @@
+{
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:072270723682:task-definition/train-ticket:1",
+  "containerDefinitions": [
+    {
+      "name": "train-ticket-container",
+      "image": "072270723682.dkr.ecr.us-east-1.amazonaws.com/ecr_repo:latest",
+      "cpu": 0,
+      "portMappings": [],
+      "essential": true,
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "systemControls": []
+    }
+  ],
+  "family": "train-ticket",
+  "executionRoleArn": "arn:aws:iam::072270723682:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "revision": 1,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "MANAGED_INSTANCES",
+    "FARGATE"
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "1024",
+  "memory": "3072",
+  "registeredAt": "2026-09-23T06:31:58.112Z",
+  "registeredBy": "arn:aws:iam::072270723682:root",
+  "tags": []
+}
