@@ -13,6 +13,7 @@ jobs:
 
     env:
       ECR_REPOSITORY: ecr_repo
+      IMAGE_TAG: ${{ github.sha }}
 
     steps:
 
@@ -42,23 +43,22 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        docker build -t $ECR_REPOSITORY:latest .
+        docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
 
     - name: Tag Docker Image
       run: |
-        docker tag $ECR_REPOSITORY:latest \
-          ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:latest
+       docker tag $ECR_REPOSITORY:$IMAGE_TAG \
+           ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
     - name: Push Docker Image
       run: |
         docker push \
-          ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:latest
-    
+            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
     - name: Update ECS Task Definition
       run: |
-          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-          sed -i "s|<IMAGE>|$ACCOUNT_ID.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}|g" task-definition.json
-          cat task-definition.json > new-task.json
+           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+           sed -i "s|<IMAGE>|$ACCOUNT_ID.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG|g" task-definition.json
+           cp task-definition.json new-task.json
 
     - name: Deploy to Amazon ECS
       uses: aws-actions/amazon-ecs-deploy-task-definition@v2
